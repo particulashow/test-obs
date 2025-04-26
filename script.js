@@ -6,6 +6,7 @@ const speedInput = document.getElementById('speed');
 const wordsInput = document.getElementById('words');
 const logDiv = document.getElementById('log');
 
+// Lista de usernames falsos
 const usernames = ["Ana", "Pedro", "Rita", "João", "Miguel", "Sofia", "Tiago", "Luís", "Beatriz", "Carla"];
 
 function randomFromArray(arr) {
@@ -34,7 +35,7 @@ function displayComment(comment) {
 }
 
 function sendFakeEvent(comment) {
-  // Esta função dispara o comentário como se fosse real
+  // Dispara um evento personalizado na página
   const event = new CustomEvent('fake-chat-message', {
     detail: {
       username: comment.username,
@@ -44,12 +45,14 @@ function sendFakeEvent(comment) {
   window.dispatchEvent(event);
 }
 
+// Botão de iniciar simulação
 startBtn.addEventListener('click', () => {
   if (intervalId) clearInterval(intervalId);
   const speed = parseInt(speedInput.value) || 1000;
   intervalId = setInterval(generateComment, speed);
 });
 
+// Botão de parar simulação
 stopBtn.addEventListener('click', () => {
   if (intervalId) {
     clearInterval(intervalId);
