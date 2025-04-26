@@ -25,6 +25,7 @@ function generateComment() {
 
   displayComment(fakeComment);
   sendFakeEvent(fakeComment);
+  sendToServer(fakeComment);
 }
 
 function displayComment(comment) {
@@ -35,7 +36,6 @@ function displayComment(comment) {
 }
 
 function sendFakeEvent(comment) {
-  // Dispara um evento personalizado na página
   const event = new CustomEvent('fake-chat-message', {
     detail: {
       username: comment.username,
@@ -45,14 +45,24 @@ function sendFakeEvent(comment) {
   window.dispatchEvent(event);
 }
 
-// Botão de iniciar simulação
+// ✨ Novo: envia para o servidor local
+function sendToServer(comment) {
+  fetch('http://localhost:4000/add-comment', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ message: comment.message })
+  }).catch(err => console.error('Erro ao enviar para o servidor:', err));
+}
+
+// Botões
 startBtn.addEventListener('click', () => {
   if (intervalId) clearInterval(intervalId);
   const speed = parseInt(speedInput.value) || 1000;
   intervalId = setInterval(generateComment, speed);
 });
 
-// Botão de parar simulação
 stopBtn.addEventListener('click', () => {
   if (intervalId) {
     clearInterval(intervalId);
